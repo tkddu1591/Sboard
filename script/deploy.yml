@@ -1,0 +1,89 @@
+#/Sboard/.github/workflows/deloy.yml
+# workflow의 이름
+name: Deploy
+
+# 해당 workflow가 언제 실행될 것인지에 대한 트리거를 지정
+on:
+  push:
+    branches: [ master ] # main branch로 push 될 때 실행
+  pull_request:
+    branches: [ master ] # main branch로 pull_request 될 때 실행
+
+# 해당 yml 내에서 사용할 key-value 속성
+env:  
+  PROJECT_NAME: LotteOn
+  AWS_REGION: ap-northeast-2
+  S3_BUCKET_NAME: tkddu1591-s3-bucket-github-actions
+  CODE_DEPLOY_APPLICATION_NAME: tkddu1591-codedeploy-app
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: tkddu1591-codedeploy-deploy-group
+  
+# workflow는 한개 이상의 job을 가지며, 각 job은 여러 step에 따라 단계를 나눌 수 있습니다.
+jobs:
+  build:
+    name: CD
+    # 해당 jobs에서 아래의 steps들이 어떠한 환경에서 실행될 것인지를 지정합니다.
+    runs-on: ubuntu-latest
+
+    steps:
+     # 작업에서 액세스할 수 있도록 $GITHUB_WORKSPACE에서 저장소를 체크아웃합니다.
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'oracle'
+          java-version: '17'
+
+      # application.properties를 프로젝트에 포함
+      - name: add Application.yml
+        run: touch ./src/main/resources/application.yml
+        shell: bash
+        
+      # properties 파일일 경우
+      #- name: copy Application.properties
+      #  run: echo "${{ secrets.APP_PROPERTIES }}" > ./src/main/resources/application.properties
+      #  shell: bash
+        
+      # yml 파일일 경우 : yml 파일의 내용을 Base64로 인코딩해야됨(https://www.convertstring.com)
+      - name: copy Application.yml
+        run: echo "${{ secrets.APP_PROPERTIES }}" > ./src/main/resources/application.yml
+        shell: bash
+        
+      # gradle 권한 설정
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+        
+      # 빌드
+      - name: Build with Gradle
+        run: ./gradlew build
+        shell: bash
+        
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          
+      # script files 복사
+      - name: Copy script
+        run: cp ./scripts/*.sh ./deploy
+      
+      # S3에 빌드 결과 업로드
+      - name: Upload to S3
+        run: aws s3 cp --region ${{ secrets.AWS_REGION }} ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+        
+      # Deploy 실행
+      - name: Deploy
+        run: |
+          aws deploy create-deployment \
+          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
+          --file-exists-behavior OVERWRITE \
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip \
+          --region ${{ secrets.AWS_REGION }} \
