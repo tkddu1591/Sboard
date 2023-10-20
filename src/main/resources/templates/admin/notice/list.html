@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org/">
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" th:href="@{/admin/css/admin.css}">
+<script th:src="../js/gnb.js"></script>
+<script th:inline="javascript">
+    function filterTable() {
+        var selectedValue = document.getElementById("searchCate1").value;
+        var rows = document.getElementById("noticeTable").getElementsByTagName("tr");
+        for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+            if (cells.length > 0) {
+                var cellValue = cells[2].textContent || cells[2].innerText;
+                rows[i].style.display = (cellValue === selectedValue || selectedValue === "유형선택") ? "" : "none";
+            }
+        }
+    }
+</script>
+
+<head>
+    <div th:replace="/admin/header.html :: header"></div>
+</head>
+<main>
+    <div th:replace="/admin/aside.html :: aside"></div>
+    <section id="admin-product-list">
+        <nav>
+            <h3>공지사항 목록</h3>
+            <p>
+                HOME > 고객센터 > <strong>공지사항</strong>
+            </p>
+        </nav>
+
+        <!-- 상품목록 컨텐츠 시작 -->
+        <section>
+
+            <form>
+                <div>
+                    <select name="searchCate1" id="searchCate1" onchange="filterTable()">
+                        <option th:each="dto : ${(distinctCate)}" th:value="${dto.cate}" th:text="${dto.cate}">유형선택</option>
+                    </select>
+                </div>
+                <table id="noticeTable" class="listTable">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" name="all" /></th>
+                        <th>번호</th>
+                        <th>유형</th>
+                        <th>제목</th>
+                        <th>조회</th>
+                        <th>날짜</th>
+                        <th>관리</th>
+                    </tr>
+                    </thead>
+                    <tbody class="listTbody">
+                    <th:block th:each="dto : ${noticeList}">
+                        <tr>
+                            <td><input type="checkbox" name="chk" /></td>
+                            <td th:text="${dto.noticeNo}"></td>
+                            <td th:text="${dto.cate}"></td>
+                            <td><a th:href="@{/admin/notice/view(pg=${dto.noticeNo})}"> <span th:text="${dto.title}"></span> </a></td>
+                            <td th:text="${dto.hit}"></td>
+                            <td th:text="${dto.rdate}"></td>
+                            <td>
+                                <a th:href="@{/write}" class="noticeDelete">[삭제]</a>
+                                <br />
+                                <a th:href="@{/write}" class="noticeUpdate">[수정]</a>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+                <input type="submit" value="선택삭제" class="deleteAll" />
+                <a th:href="@{/admin/cs/notice/write}" class="writeBtn">작성하기</a>
+            </form>
+
+            <div class="paging">
+                <span class="prev">
+                    <a href="#"><&nbsp;이전</a>
+                </span>
+                <span class="num">
+                    <th:block th:each="num : ${#numbers.sequence(1,lastPageNum)}">
+                        <a th:href="@{/admin/notice/list(pg=${num})}" th:text="${num}">[[${num}]]</a>
+                    </th:block>
+                </span>
+                <span class="next">
+                    <a href="#">다음&nbsp;></a>
+                </span>
+            </div>
+        </section>
+
+    </section>
+</main>
+<div th:replace="/admin/footer.html :: footer"></div>
+</html>

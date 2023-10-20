@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.kmarket.mapper.MybatisCSMapper">
+    <select id="findTypeForCate" resultType="com.example.kmarket.entity.cs.KmCsCateEntity">
+        <![CDATA[
+        SELECT DISTINCT CC.cate, CC.cateName
+            FROM km_cs_type AS CT
+            JOIN km_cs_cate AS CC
+                ON CT.cate = CC.cate
+            WHERE type < #{type};
+        ]]>
+    </select>
+</mapper>

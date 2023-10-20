@@ -1,0 +1,81 @@
+<th:block th:insert="~{/cs/inc/header.html}"/>
+<section id="cs">
+    <div class="qna">
+        <nav>
+            <div>
+                <p>
+                    <a th:href="@{/cs/index}">홈</a><span>&gt;</span>
+                    <a th:href="@{/cs/qna/list(cate=member)}">문의하기</a>
+                </p>
+            </div>
+        </nav>
+
+        <section id="pageCss" class="write">
+            <aside>
+                <h2>문의하기</h2>
+                <ul>
+                    <li class="${cateDto.getCate() eq 'member' ? 'on' : '' }">
+                        <a th:href="@{/cs/qna/list(cate=member)}">회원</a>
+                    </li>
+                    <li class="${cateDto.getCate() eq 'coupon' ? 'on' : '' }">
+                        <a th:href="@{/cs/qna/list(cate=coupon)}">쿠폰/이벤트</a>
+                    </li>
+                    <li class="${cateDto.getCate() eq 'order' ? 'on' : '' }">
+                        <a th:href="@{/cs/qna/list(cate=order)}">주문/결제</a>
+                    </li>
+                    <li class="${cateDto.getCate() eq 'delivery' ? 'on' : '' }">
+                        <a th:href="@{/cs/qna/list(cate=delivery)}">배송</a>
+                    </li>
+                    <li class="${cateDto.getCate() eq 'cancel' ? 'on' : '' }">
+                        <a th:href="@{/cs/qna/list(cate=cancel)}">취소/반품/교환</a>
+                    </li>
+                    <li class="${cateDto.getCate() eq 'travel' ? 'on' : '' }">
+                        <a th:href="@{/cs/qna/list(cate=travel)}">여행/숙박/항공</a>
+                    </li>
+                    <li class="${cateDto.getCate() eq 'safe' ? 'on' : '' }">
+                        <a th:href="@{/cs/qna/list(cate=safe)}">안전거래</a>
+                    </li>
+                </ul>
+            </aside>
+
+            <article>
+                <form action="#">
+                    <table>
+                        <tr>
+                            <td>문의유형</td>
+                            <td>
+                                <select id="cate" name="cate" required>
+                                    <option selected disabled value="0">1차 분류 선택</option>
+                                    <th:block th:each="cateOption : ${cates}">
+                                        <option th:value="${cateOption.cate}" th:text="${cateOption.cateName}"></option>
+                                    </th:block>
+                                </select>
+
+                                <select name="type" id="type" required>
+                                    <option selected disabled value="0">2차 분류 선택</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>문의제목</td>
+                            <td>
+                                <input type="text" name="title" required placeholder="제목을 입력하세요."/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>문의내용</td>
+                            <td>
+                                <textarea name="content" required placeholder="내용을 입력하세요."></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                    <div>
+                        <a href="#" class="btnList">취소하기</a>
+                        <input type="submit" class="btnSubmit" value="등록하기"/>
+                    </div>
+                </form>
+            </article>
+        </section>
+    </div>
+</section>
+<th:block th:insert="~{/cs/inc/footer.html}"/>

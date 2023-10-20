@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>롯데ON::고객센터</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.ico}"/>
+    <link rel="stylesheet" th:href="@{/cs/css/style.css}">
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <header>
+            <div class="top">
+                <div>
+                    <p>
+                        <span class="memberUid">ㅇㅇㅇ님</span>
+                        <a href="/admin/index">관리자</a>
+                        <a th:href="@{/index}">HOME</a>
+                        <a href="/member/logout">로그아웃</a>
+
+                        <a th:href="@{/index}">HOME</a>
+                        <a href="/member/login">로그인</a>
+                        <a href="#">회원가입</a>
+                        <a href="#">마이페이지</a>
+                        <a href="#">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;
+                            장바구니
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div class="logo">
+                <div>
+                    <a th:href="@{/cs/index}">
+                        <img th:src="@{/images/header_logo.png}" alt="로고"/>고객센터
+                    </a>
+                </div>
+            </div>
+        </header>
+</html>

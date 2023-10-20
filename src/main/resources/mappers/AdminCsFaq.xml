@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.kmarket.mapper.admin.KmAdminFaqMapper">
+
+    <select id="selectCsFaq" resultType="com.example.kmarket.dto.admin.KmAdminFaqDTO">
+        SELECT * FROM `km_cs_faq`;
+    </select>
+
+    <select id="selectCsNoticesByfaqNo" resultType="com.example.kmarket.dto.admin.KmAdminFaqDTO">
+        SELECT * FROM `km_cs_notice` WHERE `faqNo`=?;
+    </select>
+
+    <!--
+    // 페이징
+    // 전체 상품 갯수 계산
+    -->
+    <select id="selectFaqCountTotal" resultType="int">
+        SELECT COUNT(*) FROM `km_cs_faq`;
+    </select>
+
+    <!--
+    // 페이징
+    // 상품 10개씩 출력
+    -->
+    <select id="selectFaq" resultType="com.example.kmarket.dto.admin.KmAdminFaqDTO">
+        SELECT * FROM `km_cs_faq`
+        LIMIT 0, 10;
+    </select>
+</mapper>

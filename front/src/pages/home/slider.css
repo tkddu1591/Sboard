@@ -1,0 +1,12 @@
+.slider>ul{
+    width: 985px;
+    height: 447px;
+    list-style: none;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider>ul>li {
+    position: absolute;
+}

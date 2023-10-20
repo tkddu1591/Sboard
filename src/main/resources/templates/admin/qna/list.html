@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/admin/css/admin.css}">
+    <script th:src="@{/admin/js/gnb.js}"></script>
+    <head>
+        <div th:replace="/admin/header.html :: header"></div>
+    </head>
+    <main>
+        <div th:replace="/admin/aside.html :: aside"></div>
+        <section id="admin-product-list">
+            <nav>
+                <h3>문의하기 목록</h3>
+                <p>
+                    HOME > 고객센터 > <strong>문의하기</strong>
+                </p>
+            </nav>
+
+            <!-- 상품목록 컨텐츠 시작 -->
+            <section>
+
+                <form action="#" method="post">
+                    <div>
+                        <select name="searchCate1" id="searchCate1">
+                            <option th:each="dto : ${qnaList}" th:value="${dto.cate}" th:text="${dto.cateName}">1차선택</option>
+                        </select>
+                        <select name="searchCate2" id="searchCate2">
+                            <option th:each="dto : ${qnaList}" th:value="${dto.type}" th:text="${dto.typeName}">2차선택</option>
+                        </select>
+                        <input type="text" name="searchKeyword" id="searchKeyword" value="" placeholder="검색어를 입력하세요.">
+                        <input type="hidden" name="searchPg" id="searchPg">
+                    </div>
+                    <table class="listTable">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" name="all"/></th>
+                                <th>번호</th>
+                                <th>유형</th>
+                                <th>제목</th>
+                                <th>조회</th>
+                                <th>날짜</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody class="listTbody">
+                                <tr th:each="dto:${qnaList}">
+                                    <td><input type="checkbox" name="chk"/></td>
+                                    <td th:text="${dto.qnaNo}"></td>
+                                    <td th:text="${dto.cate}"></td>
+                                    <td th:text="${dto.type}"></td>
+                                    <td><a th:href="@{/admin/cs/qna/view/{qnaNo}(qnaNo=${dto.qnaNo})}"><span th:text="${dto.title}"></span></a></td>
+                                    <td th:text="${dto.writer}"></td>
+                                    <td th:text="${dto.rdate}"></td>
+                                    <td>
+                                        <a class="noticeDelete">검토중</a>
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+
+
+                    <input type="submit" value="선택삭제" class="deleteAll" />
+                    <a th:href="@{/admin/cs/notice/write.do}" class="writeBtn">작성하기</a>
+                </form>
+
+            </section>
+
+            <!-- 상품목록 컨텐츠 끝 -->
+        </section>
+    </main>
+    <div th:replace="/admin/footer.html :: footer"></div>
+</html>

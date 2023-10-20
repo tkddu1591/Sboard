@@ -1,0 +1,117 @@
+<th:block th:insert="~{@{/cs/inc/header.html}}"/>
+    <section id="cs">
+        <div class="faq">
+            <nav>
+                <div>
+                    <p>
+                        <a th:href="@{/cs/index}">홈</a><span>&gt;</span>
+                        <a th:href="@{/cs/faq/list(cate=member)}">자주묻는질문</a>
+                    </p>
+                </div>
+            </nav>
+            <section id="pageCss" class="list">
+                <aside>
+                    <h2>자주 묻는 질문</h2>
+                    <ul>
+                        <li class="${cateDto.getCate() eq 'member' ? 'on' : '' }">
+                            <a th:href="@{/cs/faq/list(cate=member)}">회원</a>
+                        </li>
+                        <li class="${cateDto.getCate() eq 'coupon' ? 'on' : '' }">
+                            <a th:href="@{/cs/faq/list(cate=coupon)}">쿠폰/이벤트</a>
+                        </li>
+                        <li class="${cateDto.getCate() eq 'order' ? 'on' : '' }">
+                            <a th:href="@{/cs/faq/list(cate=order)}">주문/결제</a>
+                        </li>
+                        <li class="${cateDto.getCate() eq 'delivery' ? 'on' : '' }">
+                            <a th:href="@{/cs/faq/list(cate=delivery)}">배송</a>
+                        </li>
+                        <li class="${cateDto.getCate() eq 'cancel' ? 'on' : '' }">
+                            <a th:href="@{/cs/faq/list(cate=cancel)}">취소/반품/교환</a>
+                        </li>
+                        <li class="${cateDto.getCate() eq 'travel' ? 'on' : '' }">
+                            <a th:href="@{/cs/faq/list(cate=travel)}">여행/숙박/항공</a>
+                        </li>
+                        <li class="${cateDto.getCate() eq 'safe' ? 'on' : '' }">
+                            <a th:href="@{/cs/faq/list(cate=safe)}">안전거래</a>
+                        </li>
+                    </ul>
+                </aside>
+
+                <article>
+                    <nav>
+                        <h1>회원 c1Name</h1>
+                        <h2>가장 자주 묻는 [c1Name] 질문입니다.</h2>
+                    </nav>
+
+                    <div>
+                        <h3>가입 typeName</h3>
+                        <ul>
+                            <li>
+                                <a th:href="@{/cs/faq/view}">
+                                    <span>Q.</span>title
+                                </a>
+                            </li>
+                            <li class="more">
+                                <a href="#">더보기</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>탈퇴</h3>
+                        <ul>
+                            <li><a href="#"><span>Q.</span>회원탈퇴 후 재가입이 가능한가요?</a></li>
+                            <li><a href="#"><span>Q.</span>회원탈퇴 후 재가입이 가능한가요?</a></li>
+                            <li><a href="#"><span>Q.</span>회원탈퇴 후 재가입이 가능한가요?</a></li>
+                            <li><a href="#"><span>Q.</span>회원탈퇴 후 재가입이 가능한가요?</a></li>
+                            <li><a href="#"><span>Q.</span>회원탈퇴 후 재가입이 가능한가요?</a></li>
+                            <li class="more"><a href="#">더보기</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>회원정보</h3>
+                        <ul>
+                            <li><a href="#"><span>Q.</span>회원정보를 수정하고 싶어요.</a></li>
+                            <li><a href="#"><span>Q.</span>회원정보를 수정하고 싶어요.</a></li>
+                            <li><a href="#"><span>Q.</span>회원정보를 수정하고 싶어요.</a></li>
+                            <li><a href="#"><span>Q.</span>회원정보를 수정하고 싶어요.</a></li>
+                            <li><a href="#"><span>Q.</span>회원정보를 수정하고 싶어요.</a></li>
+                            <li class="more"><a href="#">더보기</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>로그인</h3>
+                        <ul>
+                            <li><a href="#"><span>Q.</span>로그인에 문제가 있어요.</a></li>
+                            <li><a href="#"><span>Q.</span>로그인에 문제가 있어요.</a></li>
+                            <li><a href="#"><span>Q.</span>로그인에 문제가 있어요.</a></li>
+                            <li><a href="#"><span>Q.</span>로그인에 문제가 있어요.</a></li>
+                            <li><a href="#"><span>Q.</span>로그인에 문제가 있어요.</a></li>
+                            <li class="more"><a href="#">더보기</a></li>
+                        </ul>
+                    </div>
+
+                </article>
+            </section>
+        </div>
+    </section>
+<script>
+    $(function () {
+        $('.more').click(function (e) {
+            e.preventDefault();
+
+            /*
+            let item = $(this).parent().find('> li:nth-child(n+4)');
+            let isVisible = item.is(':visible');
+
+            console.log('isVisible : ' + isVisible);
+
+            if(isVisible){
+              item.slideUp(100);
+            }else{
+              item.slideDown(100);
+            }
+            */
+        });
+    });
+</script>
+<th:block th:insert="~{@{/cs/inc/footer.html}}"/>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/admin/css/admin.css}">
+    <script th:src="@{/admin/js/gnb.js}"></script>
+    <script th:inline="javascript">
+        function filterTable() {
+            var selectedValueCate = document.getElementById("searchCate1").value;
+            var selectedValueType = document.getElementById("searchCate2").value;
+            var rows = document.getElementById("noticeTable").getElementsByTagName("tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var cellsCate = rows[i].getElementsByTagName("td")[1];
+                var cellsType = rows[i].getElementsByTagName("td")[2];
+
+                if (cellsCate && cellsType) {
+                    var cellValueCate = cellsCate.textContent || cellsCate.innerText;
+                    var cellValueType = cellsType.textContent || cellsType.innerText;
+
+                    if (cellValueCate === selectedValueCate && cellValueType === selectedValueType) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+<head>
+    <div th:replace="/admin/header.html :: header"></div>
+</head>
+<body>
+<main>
+    <div th:replace="/admin/aside.html :: aside"></div>
+    <section id="admin-product-list">
+        <nav>
+            <h3>자주묻는질문 목록</h3>
+            <p>
+                HOME > 고객센터 > <strong>자주묻는질문</strong>
+            </p>
+        </nav>
+
+        <!-- 상품목록 컨텐츠 시작 -->
+        <section>
+            <form action="#" method="post">
+                <div>
+                    <div>
+                        <select name="searchCate1" id="searchCate1" onchange="filterTable()">
+                            <option value="" selected disabled>1차 선택</option>
+                            <option th:each="dto : ${(distinctCate)}" th:value="${dto.cate}" th:text="${dto.cate}"></option>
+                        </select>
+                        <select name="searchCate2" id="searchCate2">
+                            <option value="" selected disabled>2차 선택</option>
+                            <option th:each="dto : ${(distinctCate)}" th:value="${dto.type}" th:text="${dto.type}"></option>
+                        </select>
+                    </div>
+
+                </div>
+                <table class="listTable">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" name="all"/></th>
+                        <th>번호</th>
+                        <th>유형</th>
+                        <th>제목</th>
+                        <th>조회</th>
+                        <th>날짜</th>
+                        <th>관리</th>
+                    </tr>
+                    </thead>
+                    <tbody class="listTbody">
+                    <tr th:each="dto : ${faqList}">
+                        <td><input type="checkbox" name="chk"/></td>
+                        <td th:text="${dto.cate}"></td>
+                        <td th:text="${dto.type}"></td>
+                        <td><a th:href="@{/admin/cs/notice/view(pg=${dto.faqNo})}" th:text="${dto.title}"></a></td>
+                        <td>조회수</td>
+                        <td th:text="${dto.rdate}"></td>
+                        <td>
+                            <a th:href="@{/admin/cs/faq/delete}" class="noticeDelete">[삭제]</a>
+                            <br/>
+                            <a th:href="@{/admin/cs/faq/update}" class="noticeUpdate">[수정]</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <input type="submit" value="선택삭제" class="deleteAll" />
+                <a th:href="@{/admin/cs/notice/write}" class="writeBtn">작성하기</a>
+            </form>
+
+            <div class="paging">
+                <span class="prev">
+                    <a href="#"><&nbsp;이전</a>
+                </span>
+                <span class="num">
+                    <th:block th:each="num : ${#numbers.sequence(1,lastPageNum)}">
+                        <a th:href="@{/admin/faq/list(pg=${num})}" th:text="${num}">[[${num}]]</a>
+                    </th:block>
+                </span>
+                <span class="next">
+                    <a href="#">다음&nbsp;></a>
+                </span>
+            </div>
+        </section>
+    </section>
+</main>
+<div th:replace="/admin/footer.html :: footer"></div>
+</body>
+</html>

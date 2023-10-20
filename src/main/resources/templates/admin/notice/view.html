@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org/">
+<meta charset="UTF-8">
+<script src="./js/gnb.js"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/admin/css/admin.css}">
+
+<head>
+    <div th:replace="/admin/header.html :: header"></div>
+</head>
+<main>
+    <div th:replace="/admin/aside.html :: aside"></div>
+    <section id="admin-product-register">
+        <nav>
+            <h3>공지사항 조회</h3>
+            <p>
+                HOME > 고객센터 > <strong>공지사항</strong>
+            </p>
+        </nav>
+        <!-- 상품등록 컨텐츠 시작 -->
+        <article>
+            <!-- 상품분류 -->
+            <section>
+                <table class="csInputTable csViewTable">
+                    <tr>
+                        <td>유형</td>
+                        <td>
+                            <p th:text="${cate}">1차 유형</p>
+                            <p th:text="${type}">2차 유형</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>제목</td>
+                        <td>
+                            <p th:text="${title}"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>내용</td>
+                        <td>
+                            <p th:text="${content}"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                </table>
+            </section>
+
+            <a class="linkBtn" href="#">삭제</a>
+            <a class="linkBtn" href="#">수정</a>
+            <a class="linkBtn mainBtn" th:href="@{/admin/notice/list}">목록</a>
+        </article>
+
+        <!-- 상품등록 컨텐츠 끝 -->
+    </section>
+</main>
+<div th:replace="/admin/footer.html :: footer"></div>
+</html>
